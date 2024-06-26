@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use rust_decimal::prelude::*;
 use super::orderbook::{Order, OrderBook};
 
 // BTCUSD
@@ -42,12 +43,12 @@ impl MatchingEngine {
     pub fn place_limit_order(
         &mut self, 
         pair: &TradingPair, 
-        price: f64, 
+        price: Decimal, 
         order: &Order
     ) -> Result<(), String>{
         match self.orderbooks.get_mut(pair) {
             Some(order_book) => {
-                order_book.add_order(price, order.clone());
+                order_book.add_limit_order(price, order.clone());
 
                 println!("place limit order: {:?}", &order);
                 Ok(())
